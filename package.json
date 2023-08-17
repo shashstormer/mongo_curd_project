@@ -1,0 +1,14 @@
+{
+  "name": "dsa_backend_application",
+  "version": "1.0.0",
+  "description": "shashstorm (shashank) application for dsa",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "shashstorm",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.3.3"
+  }
+}
