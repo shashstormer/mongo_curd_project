@@ -1,35 +1,40 @@
 from dataclasses import dataclass
+from fastapi.params import Query
 from pydantic import BaseModel, Field, field_validator, ValidationError
-from typing import List, Any, Literal
-from config import force_collection_name
+from typing import Any, Literal
 
 
 @dataclass
 class Validatiors:
     class search(BaseModel):
-        field_name: str = Field(..., title="Field Name", description="Vame of field using which field is identified")
-        field_value: Any = Field(..., title="Field Value", description="Value of field using which field is identified")
-        find_all: Literal[True, False] = Field(False)
-        if force_collection_name is None:
-            collection: str = Field("collection_default")
-        else:
-            collection = force_collection_name
+        field_name: str = Field(Query(...), title="Field Name",
+                                description="Vame of field using which field is identified")
+        field_value: Any = Field(Query(...), title="Field Value",
+                                 description="Value of field using which field is identified")
+        find_all: Literal["true", "false"] or bool = Field("false")
 
-        # NOTE: this section has been comented to allow none so that we can fetch all records
-        # @field_validator('field_value' , mode="before")
-        # def notNone(self, value):
-        #     if value is None:
-        #         raise ValidationError('The Field Value Cannot Be None')
-        #     return value
+        def find__all(self):
+            if type(self.find_all) == bool:
+                return self.find_all
+            if self.find_all == "true":
+                self.find_all = True
+                return True
+            else:
+                self.find_all = False
+                return False
+
+    # NOTE: this section has been comented to allow none so that we can fetch all records
+    # @field_validator('field_value' , mode="before")
+    # def notNone(self, value):
+    #     if value is None:
+    #         raise ValidationError('The Field Value Cannot Be None')
+    #     return value
 
     class delete(BaseModel):
         field_name: str = Field(..., title="Field Name", description="Name of field using which field is identified")
         field_value: Any = Field(..., title="Field Value", description="Value of field using which field is identified")
-        if force_collection_name is None:
-            collection: str = Field("collection_default")
-        else:
-            collection = force_collection_name
 
+        @staticmethod
         @field_validator('field_value', mode="before")
         def notNone(value):
             if value is None:
@@ -39,11 +44,9 @@ class Validatiors:
     class update(BaseModel):
         field_name: str = Field(..., title="Field Name", description="Name of field using which field is identified")
         field_value: Any = Field(..., title="Field Value", description="Value of field using which field is identified")
-        if force_collection_name is None:
-            collection: str = Field("collection_default")
-        else:
-            collection = force_collection_name
+        data: dict = Field(..., title="Data", description="Data to be updated")
 
+        @staticmethod
         @field_validator('field_value', mode="before")
         def notNone(value):
             if value is None:
@@ -52,11 +55,8 @@ class Validatiors:
 
     class by_id(BaseModel):
         id_: Any = Field(...)
-        if force_collection_name is None:
-            collection: str = Field("collection_default")
-        else:
-            collection = force_collection_name
 
+        @staticmethod
         @field_validator('id_', mode="before")
         def notNone(value):
             if value is None:
@@ -65,11 +65,8 @@ class Validatiors:
 
     class create(BaseModel):
         data: Any = Field(...)
-        if force_collection_name is None:
-            collection: str = Field("collection_default")
-        else:
-            collection = force_collection_name
 
+        @staticmethod
         @field_validator('data', mode="before")
         def notNone(value):
             if value is None:

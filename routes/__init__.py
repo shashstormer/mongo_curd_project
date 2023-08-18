@@ -1,9 +1,10 @@
 from fastapi.responses import FileResponse
+from .database import setup_database_post_only_routes
 
 
 def go_docs(app):
     @app.get("/")
-    def redirect_docs():
+    def home():
         return FileResponse("./assets/html/home.html")
 
     @app.get('/assets/{file_path:path}')

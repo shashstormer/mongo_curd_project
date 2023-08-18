@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from api import setup_curd
-from routes import go_docs
+from routes import go_docs, setup_database_post_only_routes
 import uvicorn
 
 app = FastAPI()
-setup_curd(app)
 go_docs(app)
+setup_curd(app)
+setup_database_post_only_routes(app)
 
 
 def run():

@@ -1,7 +1,8 @@
-from pymongo import MongoClient
+from pymongo import MongoClient, DESCENDING
 from threading import Lock
 from models import Validatiors
-from config import db_string, db
+from config import db_string, db, collection
+from fastapi import Depends
 
 
 class MongoDb:
@@ -10,17 +11,39 @@ class MongoDb:
         self.db = self.client[db]
         self.lock = Lock()
 
-    async def search(self, attrs: Validatiors.search):
+    async def search(self, attrs: Validatiors.search = Depends()):
         """
         using method get
         search items with the specified field, value and return one value or all values as specified
         :param attrs:
         :return:
         """
-        if attrs.find_all:
-            self.db[attrs.collection].find({attrs.field_name: attrs.field_value})
+        if attrs.find__all():
+            data = self.db[collection].find({attrs.field_name: attrs.field_value})
         else:
-            self.db[attrs.collection].find_one({attrs.field_name: attrs.field_value})
+            data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
+        try:
+            del data['_id']
+        except (KeyError, TypeError):
+            pass
+        return data
+
+    async def search_post(self, attrs: Validatiors.search):
+        """
+        using method get
+        search items with the specified field, value and return one value or all values as specified
+        :param attrs:
+        :return:
+        """
+        if attrs.find__all():
+            data = self.db[collection].find({attrs.field_name: attrs.field_value})
+        else:
+            data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
+        try:
+            del data['_id']
+        except (KeyError, TypeError):
+            pass
+        return data
 
     async def create_record(self, attrs: Validatiors.create):
         """
@@ -28,8 +51,11 @@ class MongoDb:
         adds the data to the specified collection or default collection
         :return:
         """
+        print(attrs)
+        print(attrs.data)
+        print(type(attrs.data))
         with self.lock:
-            self.db[attrs.collection].insert_one(attrs.data)
+            return {"item_id": str(self.db[collection].insert_one(attrs.data).inserted_id)}
 
     async def delete_record(self, attrs: Validatiors.delete):
         """
@@ -39,7 +65,17 @@ class MongoDb:
         :return:
         """
         with self.lock:
-            self.db[attrs.collection].find_one_and_delete({attrs.field_name: attrs.field_value})
+
+            data = self.db[collection].find_one_and_delete(
+                {attrs.field_name: attrs.field_value},
+                sort=[('_id', DESCENDING)]
+            )
+            print(data)
+            try:
+                del data['_id']
+            except (KeyError, TypeError):
+                pass
+            return data
 
     async def update_record(self, attrs: Validatiors.update):
         """"
@@ -48,8 +84,15 @@ class MongoDb:
         :param attrs:
         :return:
         """
+        data = self.db[collection].find_one_and_update({attrs.field_name: attrs.field_value}, {'$set': attrs.data})
+        try:
+            del data['_id']
+        except (KeyError, TypeError):
+            pass
         with self.lock:
-            self.db[attrs.collection].find_one_and_update({attrs.field_name: attrs.field_value}, {'$set': attrs.data})
+            return {
+                "old value": data
+            }
 
 
 MongoDb = MongoDb()

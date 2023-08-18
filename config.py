@@ -12,4 +12,4 @@ db_string = os.getenv("database_string")
 if db_string is None:
     raise DatabaseNotSet
 db = os.getenv("database_name", "records_db")
-force_collection_name = os.getenv("collection_name")
+collection = os.getenv("collection_name", "collection_data")

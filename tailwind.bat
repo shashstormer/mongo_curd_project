@@ -1,0 +1,1 @@
+npx tailwindcss --output "./assets/css/tailwind.css" -w

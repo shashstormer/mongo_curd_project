@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Database - Test</title>
+</head>
+<body>
+<form id="form">
+    <label for="method">Method:</label><input type="text" placeholder="METHOD" id="method" value="GET">
+    <label for="data">Data:</label><input type="text" placeholder="data" id="data" value="{}">
+    <button type="submit" id="submit">Submit</button>
+</form>
+<p id="response"></p>
+    <script>
+        async function request(url, method, _data) {
+            let options = {
+                method: method,
+            };
+
+            if (['POST', 'PUT', 'DELETE'].includes(method)) {
+                options.headers = {
+                    'Content-Type': 'application/json'
+                };
+                options.body = JSON.stringify(_data);
+            } else {
+                url += '?';
+                for (let key in _data) {
+                    url += `${key}=${_data[key]}&`;
+                }
+            }
+
+            return await fetch(url, options);
+        }
+
+        let method, data, response_container, response_data;
+        window.onload = () => {
+            method = document.getElementById('method');
+            data = document.getElementById('data');
+            document.getElementById('form').addEventListener('submit', submit);
+            response_container = document.getElementById('response');
+        };
+        async function submit(e) {
+            e.preventDefault();
+            console.log("called");
+            response_data = await request('/curd', method.value, JSON.parse(data.value));
+            console.log("complete");
+            response_container.innerHTML = await response_data.text();
+        }
+    </script>
+</body>
+</html>
