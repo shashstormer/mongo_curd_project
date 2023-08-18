@@ -1,8 +1,10 @@
 from pymongo import MongoClient, DESCENDING
+from pymongo.errors import ServerSelectionTimeoutError
 from threading import Lock
 from models import Validatiors
 from config import db_string, db, collection
 from fastapi import Depends
+from fastapi.responses import JSONResponse
 
 
 class MongoDb:
@@ -18,15 +20,18 @@ class MongoDb:
         :param attrs:
         :return:
         """
-        if attrs.find__all():
-            data = self.db[collection].find({attrs.field_name: attrs.field_value})
-        else:
-            data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
         try:
-            del data['_id']
-        except (KeyError, TypeError):
-            pass
-        return data
+            if attrs.find__all():
+                data = self.db[collection].find({attrs.field_name: attrs.field_value})
+            else:
+                data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
+            try:
+                del data['_id']
+            except (KeyError, TypeError):
+                pass
+            return data
+        except ServerSelectionTimeoutError:
+            return JSONResponse({"error": "server not found"}, status_code=500)
 
     async def search_post(self, attrs: Validatiors.search):
         """
