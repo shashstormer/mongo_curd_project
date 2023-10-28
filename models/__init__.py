@@ -11,17 +11,6 @@ class Validatiors:
                                 description="Vame of field using which field is identified")
         field_value: Any = Field(Query(...), title="Field Value",
                                  description="Value of field using which field is identified")
-        find_all: Literal["true", "false"] or bool = Field("false")
-
-        def find__all(self):
-            if type(self.find_all) == bool:
-                return self.find_all
-            if self.find_all == "true":
-                self.find_all = True
-                return True
-            else:
-                self.find_all = False
-                return False
 
     # NOTE: this section has been comented to allow none so that we can fetch all records
     # @field_validator('field_value' , mode="before")

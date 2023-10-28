@@ -21,10 +21,10 @@ class MongoDb:
         :return:
         """
         try:
-            if attrs.find__all():
-                data = self.db[collection].find({attrs.field_name: attrs.field_value})
-            else:
-                data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
+            # if attrs.find__all():
+            #     data = self.db[collection].find({attrs.field_name: attrs.field_value})
+            # else:
+            data = self.db[collection].find_one({attrs.field_name: attrs.field_value})
             try:
                 del data['_id']
             except (KeyError, TypeError):
