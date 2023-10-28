@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from fastapi.params import Query
 from pydantic import BaseModel, Field, field_validator, ValidationError
 from typing import Any, Literal
+print("models/__init__.py")
 
 
 @dataclass

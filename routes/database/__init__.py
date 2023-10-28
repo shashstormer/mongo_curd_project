@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from database import MongoDb
+from apps.database import MongoDb
 
 
 def setup_database_post_only_routes(app: FastAPI):
