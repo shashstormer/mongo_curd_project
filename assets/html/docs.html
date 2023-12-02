@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CRUD Documentation</title>
+    <link rel="stylesheet" href="/assets/css/documentation.css">
+</head>
+<body class="dark">
+<div class="main">
+    <div class="top-page">
+        <h1>CRUD Documentation</h1>
+        <div class="theme-toogle">
+            <div class="theme-note">Dark</div>
+            <label class="toggle-container">
+                <input type="checkbox" class="toggle-input">
+                <span class="toggle-slider"></span>
+                <script>
+                    let checkbox = document.querySelector(".toggle-input");
+                    let modetext = document.querySelector(".theme-note");
+                    checkbox.checked = true;
+                    checkbox.addEventListener('change', function () {
+                        if (checkbox.checked) {
+                            document.body.classList.add("dark");
+                            document.body.classList.remove("light");
+                            modetext.innerHTML = "Dark";
+                        } else {
+                            document.body.classList.remove("dark");
+                            document.body.classList.add("light");
+                            modetext.innerHTML = "Light";
+                        }
+                    });
+                </script>
+            </label>
+        </div>
+    </div>
+    <div class="main-content">
+        <div class="data-tabs">
+            <div class="tabs">
+                <div data-id="crud" class="tab active">CRUD</div>
+                <div data-id="db_post" class="tab">Database Post</div>
+                <div data-id="credits" class="tab">Credits</div>
+            </div>
+            <div class="tabs-data">
+                <div class="tab-data" id="crud">
+                    <h2>CRUD</h2>
+                    <h3>What is CRUD?</h3>
+                    <p>CRUD is an acronym for Create, Read, Update, and Delete. CRUD operations are basic data
+                        manipulation
+                        for a database.</p>
+                    <h3>How to use the CRUD feature?<span class="star-note">&nbsp;&nbsp;*This assumes you have set up the server and it is running</span>
+                    </h3>
+                    <p>
+                        <span class="crud-method">GET : </span><br><span class="crud-m-data">When you fetch the /crud route with GET method the server retrives data from the database and returns it. Refer <a href="/docs#/default/search_curd_get">here</a> for payload information.</span>
+                    </p>
+                    <p>
+                        <span class="crud-method">PUT : </span><br><span class="crud-m-data">When you fetch the /crud route with PUT method the server inserts data into the database and returns the item ID. Refer <a href="/docs#/default/create_record_curd_put">here</a> for payload information.</span>
+                    </p>
+                    <p>
+                        <span class="crud-method">PATCH : </span><br><span class="crud-m-data">When you fetch the /crud route with PATCH method the server updates data in the database and returns the old data. Refer <a href="/docs#/default/update_record_curd_patch">here</a> for payload information.</span>
+                    </p>
+                    <p>
+                        <span class="crud-method">DELETE : </span><br><span class="crud-m-data">When you fetch the /crud route with DELETE method the server deletes data from the database and returns the deleted data. Refer <a href="/docs#/default/delete_record_curd_delete">here</a> for payload information.</span>
+                    </p>
+                </div>
+                <div class="tab-data hidden" id="db_post">
+                    <p class="crud-m-data">
+                        <span>the parameters are the same as the CRUD parameters for the event you want to do.
+                        <br>
+                        but the only difference is that you use only the post-method and different routes.
+                        <br>
+                        the routes are as follows:
+                        <br>
+                        <a href="/docs#/default/search_post_search_post">/search</a>
+                        <br>
+                        <a href="/docs#/default/update_record_update_post">/update</a>
+                        <br>
+                        <a href="/docs#/default/delete_record_delete_post">/delete</a>
+                        <br>
+                        <a href="/docs#/default/create_record_create_post">/create</a>
+                        <br>
+                        as you can already see the routes are named right after what it does.</span>
+                    </p>
+                </div>
+                <div class="tab-data hidden" id="credits">
+                    <a href="https://github.com/shashstormer">Shashank Patil</a>
+                </div>
+            </div>
+            <script>
+                let tabs = document.querySelectorAll(".tab");
+                let tabs_data = document.querySelectorAll(".tab-data");
+                tabs.forEach(function (tab) {
+                    tab.addEventListener("click", function () {
+                        tabs.forEach(function (tab) {
+                            tab.classList.remove("active");
+                        })
+                        tabs_data.forEach(function (tab_data) {
+                            tab_data.classList.add("hidden");
+                        })
+                        tab.classList.add("active");
+                        document.querySelector("#" + tab.dataset.id).classList.remove("hidden");
+                    })
+                })
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+</html>

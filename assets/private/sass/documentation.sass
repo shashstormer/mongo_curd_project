@@ -1,0 +1,122 @@
+body
+    transition: background-color 0.5s ease
+
+.toggle-container
+    position: relative
+    width: 60px
+    height: 34px
+
+.theme-toogle
+    display: flex
+    margin-top: 26px
+    margin-right: 0
+    margin-left: auto
+    flex-wrap: wrap
+
+.theme-note
+    margin: 6px 8px 0 auto
+    font-size: 20px
+    font-weight: 600
+
+.top-page
+    margin-top: 20px
+    display: flex
+    flex-wrap: wrap
+
+
+.toggle-slider
+    position: absolute
+    cursor: pointer
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    background-color: #ccc
+    border-radius: 34px
+    transition: .4s
+
+
+.toggle-slider:before
+    position: absolute
+    content: ""
+    height: 26px
+    width: 26px
+    left: 4px
+    bottom: 4px
+    background-color: white
+    border-radius: 50%
+    transition: .4s
+
+.light
+    background-color: #fff
+    color: #000
+    .tab
+        font-weight: 600
+        background: rgba(245, 217, 217, 0.75)
+    .active
+        background: rgb(156, 135, 135)
+    .tabs-data
+        background: rgba(203, 190, 73, 0.39)
+
+.dark
+    background: #16312f
+    color: #e0cece
+    .tab
+        background: rgba(34, 29, 27, 0.75)
+    .active
+        background: rgb(66, 53, 48)
+    .tabs-data
+        background: rgba(46, 43, 16, 0.39)
+
+
+
+
+input:checked + .toggle-slider
+    background-color: #2196F3
+
+
+input:focus + .toggle-slider
+    box-shadow: 0 0 1px #2196F3
+
+
+input:checked + .toggle-slider:before
+    transform: translateX(26px)
+
+
+.toggle-input
+    display: none
+
+.tabs
+    display: flex
+    flex-wrap: wrap
+    margin-top: 20px
+    margin-bottom: 20px
+    margin-left: 5%
+    :first-child
+        border-radius: 20px 0 0 20px
+    :last-child
+        border-radius: 0 20px 20px 0
+
+.hidden
+    display: none
+
+.tab
+    margin-right: 10px
+    padding: 20px
+    font-weight: 400
+.star-note
+    font-weight: 400
+    font-size: 12px
+
+.tabs-data
+    margin-left: 5%
+    margin-right: 5%
+    min-height: 300px
+    padding: 10px 20px 10px 20px
+
+.crud-method
+    font-weight: 600
+    font-size: 16px
+
+.crud-m-data
+    font-size: 14px
